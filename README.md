@@ -7,15 +7,14 @@
 Чат тестировался на Ubunta 18.04 
 
 Перед запуском:
-1) Чат проверялся только на Ubuntu 18.04
-2) Необходимо установить библиотеку для работы с mysql в python, для этого нужно выполнить в терминале команду:
+1) Необходимо установить библиотеку для работы с mysql в python, для этого нужно выполнить в терминале команду:
  pip install mysql-connector==2.1.4
-3) Установить MySQL(https://losst.ru/ustanovka-mysql-ubuntu-16-04)
-4) Создать в базе данных две таблицы
-4.1) chat_user (NAME(varchar 20), PASSWORD(varchar 20))
-4.2) post (AUTHOR(varchar 20), TEXT(varchar 100(можно больше)), CREATED_AT(datetime))
-5) Скачать или склонировать все файлы в одну папку.
-6) В файле chat_server.py в строке 7 в скобках создания Databaseconnector прописать юзера и базу данных mysql
+2) Установить MySQL(https://losst.ru/ustanovka-mysql-ubuntu-16-04)
+3) Создать в базе данных две таблицы
+3.1) chat_user (NAME(varchar 20), PASSWORD(varchar 20))
+3.2) post (AUTHOR(varchar 20), TEXT(varchar 100(можно больше)), CREATED_AT(datetime))
+4) Скачать или склонировать все файлы в одну папку.
+5) В файле chat_server.py в строке 7 в скобках создания Databaseconnector прописать юзера и базу данных mysql
 
 Запуск
 1. Запустить сервер(в терминале командой python chat_server.py
@@ -28,7 +27,6 @@
  
  ООП: database_methods.py, class Database connector выполняет всю работу с базой данных
  P.S. В Python нет идентификатора private, поэтому поле connector public по умолчанию
- 
  
  Design Patterns: chat_server.py, строка 65
  Во всех циклах for в языке программирования python используется паттерн Итератор.
