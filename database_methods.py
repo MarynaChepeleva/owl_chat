@@ -1,4 +1,5 @@
 import hashlib
+import hashlib
 import uuid
 import datetime as dt
 import mysql.connector
@@ -12,6 +13,21 @@ class DatabaseConnector():
                                     database=databasename)
 
     def get_hashed_password(self, password):
+        """
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("pip")
+        '612a6832e385695721e4'
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("mice")
+        'f57eabe484a190852587'
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("owl")
+        '58605353ca2a56d0ddbd'
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("puppy")
+        'a750504eb2d68869c750'
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("rat")
+        '7b66a7e952dcc7e936dc'
+        >>> DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat').get_hashed_password("rafic")
+        '9c9771af941ba160af32'
+
+        """
         return str(hashlib.sha512(password.encode('utf-8')).hexdigest())[:20]
 
     def check_password(self, hashed_password, user_password):
@@ -65,3 +81,7 @@ class DatabaseConnector():
         cursor.execute(sql_stmt, (name,))
         row = cursor.fetchone()
         return True if row or name == 'GUEST' else False
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
