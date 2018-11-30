@@ -2,8 +2,9 @@ import socket
 import sys
 import threading
 
-from database_methods import save_post, tail_posts, create_user, check_user, is_username_used
+from database_methods import DatabaseConnector
 
+connector = DatabaseConnector(username='vitali', userpassword= '1', hostname='localhost', databasename= 'chat')
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -44,15 +45,14 @@ def clientthread(conn, addr):
                 message = 'Users: ' + ', '.join([i for i in dict_of_users.values() if i != 'GUEST'])
                 message2conn(message if message else 'None', conn)
             elif message == '/t' and user != 'GUEST':
-                posts2conn(tail_posts(), conn)
+                posts2conn(connector.tail_posts(), conn)
             elif message:
                 message = user + '@' + addr[0] + "> " + message
                 print(message)
-                #message2conn('<You as : ' + message, conn)
                 message_to_send = user + '@' + addr[0] + "> " + message
                 broadcast(message_to_send.encode(), conn)
                 if user != 'GUEST':
-                    save_post(user, message)
+                    connector.save_post(user, message)
 
 
             else:
@@ -64,7 +64,7 @@ def clientthread(conn, addr):
 def broadcast(message, conn):
     for user_connection in dict_of_users:
         user_name = dict_of_users[conn]
-        if user_connection != conn: #and (user_name and dict_of_users[user_connection]) != 'GUEST':
+        if user_connection != conn:
             try:
                 user_connection.send(message)
             except:
@@ -102,14 +102,14 @@ def login(conn):
             except:
                 message2conn('You are not logged', conn)
                 return False
-            if is_username_used(name):  # registered user
-                if check_user(name, password):
+            if connector.is_username_used(name):
+                if connector.check_user(name, password):
                     message = 'Thank you, {}. You are logged!'.format(name)
                 else:
                     message2conn('Password is wrong', conn)
                     return False
-            else:  # new user
-                if create_user(name, password):
+            else:
+                if connector.create_user(name, password):
                     message = 'Thank you, {}. You are registered and logged!'.format(name)
                 else:
                     message2conn('Login or password are wrong', conn)

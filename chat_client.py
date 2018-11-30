@@ -1,5 +1,3 @@
-""" The chat client """
-
 import sys
 import select
 import socket
@@ -24,7 +22,7 @@ while chat:
     for socket in read_sockets:
         if socket == server:
             message = socket.recv(2048).decode()
-            if not message:  # server closed
+            if not message:
                 chat = False
                 print('Server closed. Bye.')
                 break
